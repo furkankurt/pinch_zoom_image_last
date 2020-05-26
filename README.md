@@ -1,6 +1,5 @@
 # Pinch Zoom Image Last Fixed
 
-
 Updated and fixed version of [Pinch Zoom Image](https://github.com/YoussefKababe/pinch_zoom_image)
 A widget that makes picture pinch zoom, Instagram style!
 
@@ -12,7 +11,7 @@ A widget that makes picture pinch zoom, Instagram style!
 Add this to your `pubspec.yml` dependencies:
 
 ```
-pinch_zoom_image_last: ^0.3.0
+pinch_zoom_image_last: ^0.3.1
 ```
 
 ## How to use
