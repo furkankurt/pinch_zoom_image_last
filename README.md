@@ -1,5 +1,7 @@
 # Pinch Zoom Image Last Fixed
 
+[![pub package](https://img.shields.io/pub/v/pinch_zoom_image_last.svg)](https://pub.dev/packages/pinch_zoom_image_last)
+
 Updated and fixed version of [Pinch Zoom Image](https://github.com/YoussefKababe/pinch_zoom_image)
 A widget that makes picture pinch zoom, Instagram style!
 
