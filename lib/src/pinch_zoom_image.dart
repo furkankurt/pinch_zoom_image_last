@@ -82,7 +82,7 @@ class _PinchZoomImageState extends State<PinchZoomImage> {
           key: overlayKey,
           height: height,
           width: width,
-          origin: origin,
+          origin: origin!,
           image: widget.image,
         );
       },
