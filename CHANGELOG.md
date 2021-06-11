@@ -1,3 +1,7 @@
+## [0.4.1] - Format.
+
+* Migrated to null-safety. Resolved issues.
+
 ## [0.3.2] - Format.
 
 * Fixed overflow parameter.
