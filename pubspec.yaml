@@ -1,6 +1,6 @@
 name: pinch_zoom_image_last
 description: Pinch Zoom Image package last fixed version. The owner of this package is not accept the pull request. That so I created updated version and you can open issues. I can fix asap.
-version: 0.3.2
+version: 0.4.1
 homepage: https://github.com/furkankurt/pinch_zoom_image_last
 
 environment:
