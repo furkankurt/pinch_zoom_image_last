@@ -13,8 +13,3 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-flutter:
-  plugin:
-    androidPackage: tr.com.furkankurt.pinch_zoom_image.pinch_zoom_image_last
-    pluginClass: PinchZoomImageLastPlugin
