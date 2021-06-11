@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'dart:ui' show lerpDouble;
 
 class PinchZoomOverlayImage extends StatefulWidget {
-  final Key key;
   final Offset origin;
   final double width;
   final double height;
   final Widget image;
 
   PinchZoomOverlayImage({
-    this.key,
-    @required this.origin,
-    @required this.width,
-    @required this.height,
-    @required this.image,
+    Key? key,
+    required this.origin,
+    required this.width,
+    required this.height,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -22,8 +21,8 @@ class PinchZoomOverlayImage extends StatefulWidget {
 
 class PinchZoomOverlayImageState extends State<PinchZoomOverlayImage>
     with TickerProviderStateMixin {
-  AnimationController reverseAnimationController;
-  Offset position;
+  late AnimationController reverseAnimationController;
+  late Offset position;
   double scale = 1.0;
 
   @override
@@ -90,13 +89,13 @@ class PinchZoomOverlayImageState extends State<PinchZoomOverlayImage>
             reverseStartPosition,
             origin,
             Curves.easeInOut.transform(reverseAnimationController.value),
-          );
+          )!;
 
           scale = lerpDouble(
             reverseStartScale,
             1.0,
             Curves.easeInOut.transform(reverseAnimationController.value),
-          );
+          )!;
         });
       });
 

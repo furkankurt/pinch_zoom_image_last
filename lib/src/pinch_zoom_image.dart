@@ -6,11 +6,11 @@ class PinchZoomImage extends StatefulWidget {
   final Widget image;
   final Color zoomedBackgroundColor;
   final bool hideStatusBarWhileZooming;
-  final Function onZoomStart;
-  final Function onZoomEnd;
+  final Function? onZoomStart;
+  final Function? onZoomEnd;
 
   PinchZoomImage({
-    @required this.image,
+    required this.image,
     this.zoomedBackgroundColor = Colors.transparent,
     this.hideStatusBarWhileZooming = false,
     this.onZoomStart,
@@ -22,9 +22,10 @@ class PinchZoomImage extends StatefulWidget {
 }
 
 class _PinchZoomImageState extends State<PinchZoomImage> {
-  OverlayEntry overlayEntry;
-  Offset scaleStartPosition;
-  Offset origin;
+  static const channel = const MethodChannel('pinch_zoom_image');
+  OverlayEntry? overlayEntry;
+  Offset? scaleStartPosition;
+  Offset? origin;
   int numPointers = 0;
   bool zooming = false;
   bool reversing = false;
@@ -66,12 +67,11 @@ class _PinchZoomImageState extends State<PinchZoomImage> {
     setState(() {
       zooming = true;
     });
-    if (widget.hideStatusBarWhileZooming)
-      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    if (widget.onZoomStart != null) widget.onZoomStart();
-    OverlayState overlayState = Overlay.of(context);
-    double width = context.size.width;
-    double height = context.size.height;
+    if (widget.hideStatusBarWhileZooming) channel.invokeMethod('hideStatusBar');
+    if (widget.onZoomStart != null) widget.onZoomStart!();
+    OverlayState overlayState = Overlay.of(context)!;
+    double width = context.size!.width;
+    double height = context.size!.height;
     origin = (context.findRenderObject() as RenderBox).localToGlobal(Offset(0.0, 0.0));
     scaleStartPosition = details.focalPoint;
 
@@ -82,28 +82,27 @@ class _PinchZoomImageState extends State<PinchZoomImage> {
           key: overlayKey,
           height: height,
           width: width,
-          origin: origin,
+          origin: origin!,
           image: widget.image,
         );
       },
     );
 
-    overlayState.insert(overlayEntry);
+    overlayState.insert(overlayEntry!);
   }
 
   void _handleScaleUpdate(ScaleUpdateDetails details) {
     if (reversing || numPointers < 2) return;
-    overlayKey?.currentState?.updatePosition(origin - (scaleStartPosition - details.focalPoint));
-    if (details.scale >= 1.0) overlayKey?.currentState?.updateScale(details.scale);
+    overlayKey.currentState?.updatePosition(origin! - (scaleStartPosition! - details.focalPoint));
+    if (details.scale >= 1.0) overlayKey.currentState?.updateScale(details.scale);
   }
 
   void _handleScaleEnd(ScaleEndDetails details) async {
     if (reversing || !zooming) return;
     reversing = true;
-    if (widget.hideStatusBarWhileZooming)
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    if (widget.onZoomEnd != null) widget.onZoomEnd();
-    await overlayKey?.currentState?.reverse();
+    if (widget.hideStatusBarWhileZooming) channel.invokeMethod('showStatusBar');
+    if (widget.onZoomEnd != null) widget.onZoomEnd!();
+    await overlayKey.currentState?.reverse();
     overlayEntry?.remove();
     overlayEntry = null;
     origin = null;
