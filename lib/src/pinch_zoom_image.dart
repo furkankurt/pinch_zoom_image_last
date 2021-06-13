@@ -22,7 +22,6 @@ class PinchZoomImage extends StatefulWidget {
 }
 
 class _PinchZoomImageState extends State<PinchZoomImage> {
-  static const channel = const MethodChannel('pinch_zoom_image');
   OverlayEntry? overlayEntry;
   Offset? scaleStartPosition;
   Offset? origin;
@@ -53,7 +52,8 @@ class _PinchZoomImageState extends State<PinchZoomImage> {
               right: 0.0,
               bottom: 0.0,
               child: Container(
-                color: zooming ? widget.zoomedBackgroundColor : Colors.transparent,
+                color:
+                    zooming ? widget.zoomedBackgroundColor : Colors.transparent,
               ),
             ),
           ],
@@ -67,12 +67,14 @@ class _PinchZoomImageState extends State<PinchZoomImage> {
     setState(() {
       zooming = true;
     });
-    if (widget.hideStatusBarWhileZooming) channel.invokeMethod('hideStatusBar');
+    if (widget.hideStatusBarWhileZooming)
+      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     if (widget.onZoomStart != null) widget.onZoomStart!();
     OverlayState overlayState = Overlay.of(context)!;
     double width = context.size!.width;
     double height = context.size!.height;
-    origin = (context.findRenderObject() as RenderBox).localToGlobal(Offset(0.0, 0.0));
+    origin = (context.findRenderObject() as RenderBox)
+        .localToGlobal(Offset(0.0, 0.0));
     scaleStartPosition = details.focalPoint;
 
     overlayEntry = OverlayEntry(
@@ -93,14 +95,17 @@ class _PinchZoomImageState extends State<PinchZoomImage> {
 
   void _handleScaleUpdate(ScaleUpdateDetails details) {
     if (reversing || numPointers < 2) return;
-    overlayKey.currentState?.updatePosition(origin! - (scaleStartPosition! - details.focalPoint));
-    if (details.scale >= 1.0) overlayKey.currentState?.updateScale(details.scale);
+    overlayKey.currentState
+        ?.updatePosition(origin! - (scaleStartPosition! - details.focalPoint));
+    if (details.scale >= 1.0)
+      overlayKey.currentState?.updateScale(details.scale);
   }
 
   void _handleScaleEnd(ScaleEndDetails details) async {
     if (reversing || !zooming) return;
     reversing = true;
-    if (widget.hideStatusBarWhileZooming) channel.invokeMethod('showStatusBar');
+    if (widget.hideStatusBarWhileZooming)
+      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     if (widget.onZoomEnd != null) widget.onZoomEnd!();
     await overlayKey.currentState?.reverse();
     overlayEntry?.remove();
